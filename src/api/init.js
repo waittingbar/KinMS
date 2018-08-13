@@ -3,11 +3,11 @@ import Axios from 'axios';
 import Config from '../config';
 
 function buildApiUrl(url) {
-  return `${Config.apiUrl}/${Config.apiPrefix}/${url}`;
+  return `${Config.apiUrl}/${url}`;
 }
 
 function setToken() {
-  Axios.defaults.headers['Authorization'] = sessionStorage.getItem(Config.tokenKey);
+  Axios.defaults.headers['token'] = sessionStorage.getItem(Config.tokenKey);
 }
 
 function isFunction(fn) {

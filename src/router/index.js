@@ -25,13 +25,13 @@ let RouteList = [
         component: resolve => require(['~/views/Home/Index.vue'], resolve),
       },
       {
-        path: '/font_awesome',
-        name: 'FontAwesome',
+        path: '/student_Manage',
+        name: 'StudentManage',
         meta: {
           title: '学生管理',
           keepAlive: false
         },
-        component: resolve => require(['~/views/Icon/FontAwesome.vue'], resolve),
+        component: resolve => require(['~/views/studentManage/index.vue'], resolve),
       },
       {
         path: '/element_icon',

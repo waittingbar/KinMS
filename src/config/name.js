@@ -7,9 +7,10 @@ export default {
       published:'发布',
       recycled:"垃圾"
   },
-  postType:{
-      AR:'AR资讯',
-      HEALTH:'健康资讯',
+  className:{
+      1:'小班',
+      2:'中班',
+      3:'大班',
   },
   sex:{
       male:'男',

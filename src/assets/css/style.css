@@ -47,3 +47,33 @@ a {
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
 }
+/*分页的公共样式*/
+.page-pagination-content {
+    padding: 15px;
+    text-align: center;
+    background: #fff;
+    border-left: 1px solid #e6ebf5;
+    border-right: 1px solid #e6ebf5;
+    border-bottom: 1px solid #e6ebf5;
+}
+.fz-table-content {
+    padding: 8px;
+    background: #fff;
+    border: 1px solid #e6ebf5;
+    border-top: none;
+}
+.tips-red {
+    color: #ff0000;
+}
+.dialog-from-700 {
+    width: 650px;
+}
+.dialog-from-700 .el-select {
+    width: 100%;
+}
+.second-form-item {
+    margin-bottom: 15px !important;
+}
+.t-center {
+    text-align: center;
+}

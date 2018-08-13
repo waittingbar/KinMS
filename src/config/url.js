@@ -1,6 +1,6 @@
 
-const devUrl = 'http://127.0.0.1:8080';
-const proUrl = 'http://apiUrl.com';
+const devUrl = 'http://183.230.82.6:7024';
+const proUrl = 'http://183.230.82.6:7024';
 
 
 export default {

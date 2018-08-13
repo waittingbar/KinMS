@@ -24,12 +24,12 @@ let icon = menu.font_icon.children;
 
 icon.font_awesome = {
   name: '学生列表',
-  path: '/font_awesome',
+  path: '/student_manage',
 
 };
 icon.element_icon = {
   name: '新增学生',
-  path: '/element_icon',
+  path: '/student_add',
 };
 
 /**
