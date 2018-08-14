@@ -48,10 +48,6 @@ ContentManage.post = {
   name: '班级列表',
   path: '/class_manage',
 };
-ContentManage.add = {
-  name: '新增班级',
-  path: '/class_add',
-};
 
 /**
  * 接送人管理
@@ -105,12 +101,7 @@ let PermissionManage = menu.permission_manage.children;
 
 PermissionManage.role = {
   name: '帐号列表',
-  path: '/role_manage',
-};
-
-PermissionManage.permission = {
-  name: '新增帐号',
-  path: '/permission_list',
+  path: '/system_manage',
 };
 
 export default menu;

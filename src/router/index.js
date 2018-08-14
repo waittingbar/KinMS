@@ -79,34 +79,34 @@ let RouteList = [
         component: resolve => require(['~/views/UserManage/Index.vue'], resolve),
       },
       {
-        path: '/category_manage',
-        name: 'CategoryManage',
+        path: '/system_manage',
+        name: 'systemManage',
         meta: {
           title: '系统管理',
           keepAlive: true
         },
-        component: resolve => require(['~/views/CategoryManage/Index.vue'], resolve),
+        component: resolve => require(['~/views/systemManage/index.vue'], resolve),
       },
-      {
-        path: '/role_manage',
-        name: 'RoleManage',
-        meta: {
-          title: '角色列表',
-          keepAlive: true
-        },
-        component: resolve => require(['~/views/PermissionManage/Role/Role.vue'], resolve),
-      },
-      {
-        path: '/permission_list',
-        name: 'PermissionList',
-        meta: {
-          title: '权限列表',
-          keepAlive: true
-        },
-        component: resolve => require(['~/views/PermissionManage/Permission/Index.vue'], resolve),
-      },
+      // {
+      //   path: '/system_manage',
+      //   name: 'systemManage',
+      //   meta: {
+      //     title: '角色列表',
+      //     keepAlive: true
+      //   },
+      //   component: resolve => require(['~/views/PermissionManage/Role/Role.vue'], resolve),
+      // },
+      // {
+      //   path: '/permission_list',
+      //   name: 'PermissionList',
+      //   meta: {
+      //     title: '权限列表',
+      //     keepAlive: true
+      //   },
+      //   component: resolve => require(['~/views/PermissionManage/Permission/Index.vue'], resolve),
+      // },
       //个人中心，可能有修改密码，头像修改等路由
-      Personal.index,
+      // Personal.index,
     ]
   },
   {
