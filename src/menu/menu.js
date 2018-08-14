@@ -27,10 +27,10 @@ icon.font_awesome = {
   path: '/student_manage',
 
 };
-icon.element_icon = {
-  name: '新增学生',
-  path: '/student_add',
-};
+// icon.element_icon = {
+//   name: '新增学生',
+//   path: '/student_add',
+// };
 
 /**
  * 班级管理
@@ -46,7 +46,7 @@ let ContentManage = menu.content_manage.children;
 
 ContentManage.post = {
   name: '班级列表',
-  path: '/post_manage',
+  path: '/class_manage',
 };
 ContentManage.add = {
   name: '新增班级',

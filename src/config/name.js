@@ -8,9 +8,9 @@ export default {
       recycled:"垃圾"
   },
   className:{
-      1:'小班',
-      2:'中班',
-      3:'大班',
+      小班:'小班',
+      中班:'中班',
+      大班:'大班',
   },
   sex:{
       male:'男',

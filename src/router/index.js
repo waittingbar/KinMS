@@ -34,13 +34,22 @@ let RouteList = [
         component: resolve => require(['~/views/studentManage/index.vue'], resolve),
       },
       {
-        path: '/element_icon',
-        name: 'ElementIcon',
+          path: '/student_Detail',
+          name: 'StudentDetail',
+          meta: {
+              title: '学生详情',
+              keepAlive: false
+          },
+          component: resolve => require(['~/views/studentManage/detail.vue'], resolve),
+      },
+      {
+        path: '/class_manage',
+        name: 'ClassManage',
         meta: {
           title: '班级管理',
           keepAlive: false
         },
-        component: resolve => require(['~/views/Icon/ElementIcon.vue'], resolve),
+        component: resolve => require(['~/views/classManage/index.vue'], resolve),
       },
       {
         path: '/post_manage',

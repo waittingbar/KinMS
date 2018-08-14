@@ -2,8 +2,8 @@
 <template>
     <div>
         <ToolBar>
-            <el-button type="danger" icon="el-icon-delete" size="small">批量删除</el-button>
-            <el-button type="primary" @click="goAddManage" icon="el-icon-plus" size="small">新增学生</el-button>
+            <el-button type="danger" @click="delBtn" icon="el-icon-delete" size="small">批量删除</el-button>
+            <el-button type="primary" @click="studentEditBtn(1)" icon="el-icon-plus" size="small">新增学生</el-button>
             <div style="float: right">
                 <el-select v-model="searchParams.classroomName" size="small" clearable placeholder="班级名称" style="width: 120px">
                     <el-option
@@ -28,64 +28,65 @@
                     :data="tableData"
                     ref="multipleTable"
                     tooltip-effect="dark"
+                    @selection-change="handleSelectionChange"
                     border
                     style="width: 100%">
                 <el-table-column
                         type="selection"
                         align="center"
-                        width="55">
+                        width="80">
                 </el-table-column>
                 <el-table-column
                         prop="name"
                         align="center"
                         label="学生姓名"
-                        width="150">
+                        min-width="150">
                 </el-table-column>
                 <el-table-column
                         prop="sex"
                         align="center"
                         label="性别"
-                        width="150">
+                        min-width="150">
                 </el-table-column>
                 <el-table-column
                         prop="age"
                         align="center"
                         label="年龄"
-                        width="150">
+                        min-width="150">
                 </el-table-column>
                 <el-table-column
-                        prop="class"
+                        prop="classroomName"
                         align="center"
                         label="所在班级"
-                        width="150">
+                        min-width="150">
                 </el-table-column>
                 <el-table-column
-                        prop="cabnt"
+                        prop="contactsName"
                         align="center"
                         label="紧急联系人"
-                        width="180">
+                        min-width="180">
                 </el-table-column>
                 <el-table-column
-                        prop="phone"
+                        prop="contactsPhone"
                         align="center"
                         label="联系电话"
-                        width="180">
+                        min-width="180">
                 </el-table-column>
                 <el-table-column
-                        prop="date"
+                        prop="createTime"
                         align="center"
                         label="录入时间"
-                        width="200">
+                        min-width="200">
                 </el-table-column>
                 <el-table-column
                         label="操作"
                         :render-header="tableAction"
                         align="center"
                         fixed="right"
-                        width="120">
+                        min-width="150">
                     <template slot-scope="scope">
-                        <el-button @click="studentEditBtn(scope.row)" type="primary" icon="el-icon-edit" size="small" circle></el-button>
-                        <el-button @click="handleClick(scope.row)" type="info" icon="el-icon-info" size="small" circle></el-button>
+                        <el-button @click="studentEditBtn(0, scope.row)" type="primary" icon="el-icon-edit" size="small" circle></el-button>
+                        <el-button @click="goDetails(scope.row.id)" type="info" icon="el-icon-info" size="small" circle></el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -103,17 +104,20 @@
             </el-pagination>
         </div>
         <el-dialog
-                title="编辑学生信息"
+                :title="modalTitle"
                 width="750px"
                 center
                 :close-on-click-modal = false
                 :close-on-press-escape = false
                 :visible.sync="studentEdit">
-            <el-form :model="form" class="dialog-from-700">
-                <el-form-item label="学生姓名：" :label-width="formLabelWidth">
+            <el-form :model="form" :rules="rules" ref="ruleForm" class="dialog-from-700">
+                <el-form-item prop="name" label="学生姓名：" :label-width="formLabelWidth">
                     <el-input v-model="form.name" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="班级：" :label-width="formLabelWidth">
+                <el-form-item prop="age" label="年龄：" :label-width="formLabelWidth">
+                    <el-input v-model="form.age" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item prop="classroomName" label="班级：" :label-width="formLabelWidth">
                     <el-select v-model="form.classroomName" placeholder="请选择班级">
                         <el-option
                                 v-for="(v,k) in $Config.className"
@@ -123,31 +127,35 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="身份证号：" :label-width="formLabelWidth">
-                    <el-input v-model="form.idard" auto-complete="off"></el-input>
+                <el-form-item prop="sex" label="性别：" :label-width="formLabelWidth">
+                    <el-radio v-model="form.sex" label="男">男</el-radio>
+                    <el-radio v-model="form.sex" label="女">女</el-radio>
                 </el-form-item>
-                <el-form-item label="紧急联系人：" :label-width="formLabelWidth">
-                    <el-input v-model="form.content" auto-complete="off"></el-input>
+                <el-form-item prop="userNo" label="身份证号：" :label-width="formLabelWidth">
+                    <el-input v-model="form.userNo" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="联系电话：" :label-width="formLabelWidth">
-                    <el-input v-model="form.phone" auto-complete="off"></el-input>
+                <el-form-item prop="contactsName" label="紧急联系人：" :label-width="formLabelWidth">
+                    <el-input v-model="form.contactsName" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="居住地址：" :label-width="formLabelWidth">
+                <el-form-item prop="contactsPhone" label="联系电话：" :label-width="formLabelWidth">
+                    <el-input v-model="form.contactsPhone" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item prop="address" label="居住地址：" :label-width="formLabelWidth">
                     <el-input v-model="form.address" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="接送人" :label-width="formLabelWidth">
+                <el-form-item label="接送人" :label-width="formLabelWidth" v-show="modalType">
                     <el-form>
                         <el-form-item label="" :label-width="formLabelWidth">
                     <span class="tips-red">注：此处录入只能录入一个信息，如需绑定多个请绑定小程序</span>
                         </el-form-item>
                         <el-form-item class="second-form-item" label="接送人姓名：" :label-width="formLabelWidth">
-                            <el-input v-model="form.idard" auto-complete="off"></el-input>
+                            <el-input v-model="form.contactsManagerList.name" auto-complete="off"></el-input>
                         </el-form-item>
                         <el-form-item class="second-form-item" label="关系：" :label-width="formLabelWidth">
-                            <el-input v-model="form.idard" auto-complete="off"></el-input>
+                            <el-input v-model="form.contactsManagerList.type" auto-complete="off"></el-input>
                         </el-form-item>
                         <el-form-item class="second-form-item" label="联系电话：" :label-width="formLabelWidth">
-                            <el-input v-model="form.idard" auto-complete="off"></el-input>
+                            <el-input v-model="form.contactsManagerList.contactsPhone" auto-complete="off"></el-input>
                         </el-form-item>
                     </el-form>
                 </el-form-item>
@@ -155,7 +163,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="studentEdit = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">保 存</el-button>
+                <el-button type="primary"  @click="submitForm('ruleForm')">保 存</el-button>
             </div>
         </el-dialog>
     </div>
@@ -167,7 +175,9 @@
     export default {
         data() {
             return {
-                total: 20,
+                total: 0,
+                modalTitle: '',
+                modalType: true, // 新增: true; 编辑：false
                 searchParams:{
                     pageNum: 1,
                     pageSize: 10,
@@ -176,58 +186,50 @@
                 },
                 form: {
                     name: '',
-                    region: '',
-                    date1: '',
-                    date2: '',
-                    delivery: false,
-                    type: [],
-                    resource: '',
-                    desc: ''
+                    age: '',
+                    userNo: '',
+                    classroomName: '',
+                    sex: '',
+                    contactsName: '',
+                    contactsPhone: '',
+                    address: '',
+                    contactsManagerList: {
+                        name: '',
+                        type: '',
+                        contactsPhone: ''
+                    }
                 },
                 formLabelWidth: '120px',
                 studentEdit: false,
                 multipleSelection: [],
-                tableData: [{
-                    date: '2016-05-03',
-                    name: '小红',
-                    sex: '女',
-                    age: '6',
-                    class: '小班',
-                    cabnt: '王军（父亲）',
-                    phone: '1679022321',
-                }, {
-                    date: '2016-05-03',
-                    name: '小红',
-                    sex: '男',
-                    age: '8',
-                    class: '小班',
-                    cabnt: '王军（父亲）',
-                    phone: '1679022321',
-                }, {
-                    date: '2016-05-03',
-                    name: '小红',
-                    sex: '男',
-                    age: '7',
-                    class: '小班',
-                    cabnt: '王军（父亲）',
-                    phone: '1679022321',
-                }, {
-                    date: '2016-05-03',
-                    name: '小红',
-                    sex: '男',
-                    age: '6',
-                    class: '小班',
-                    cabnt: '王军（父亲）',
-                    phone: '1679022321',
-                }, {
-                    date: '2016-05-03',
-                    name: '小红',
-                    sex: '男',
-                    age: '6',
-                    class: '小班',
-                    cabnt: '王军（父亲）',
-                    phone: '1679022321',
-                }]
+                tableData: [],
+                rules: {
+                    name: [
+                        { required: true, message: '请输入学生姓名', trigger: 'blur' },
+                        { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
+                    ],
+                    age: [
+                        { required: true, message: '请输入年龄', trigger: 'blur' }
+                    ],
+                    userNo: [
+                        { required: true, message: '请输入身份证号', trigger: 'blur' }
+                    ],
+                    classroomName: [
+                        { required: true, message: '请选择班级', trigger: 'change' }
+                    ],
+                    sex: [
+                        { required: true, message: '请选择一个性别', trigger: 'change' }
+                    ],
+                    contactsName: [
+                        { required: true, message: '请填写联系人姓名', trigger: 'blur' }
+                    ],
+                    contactsPhone: [
+                        { required: true, message: '请填写联系人电话', trigger: 'blur' }
+                    ],
+                    address: [
+                        { required: true, message: '请填写居住地址', trigger: 'blur' }
+                    ]
+                }
             }
         },
         created() {
@@ -236,12 +238,16 @@
         methods: {
             getList() {
                 //获取列表数据
-                //  this.$Api.fetchStudentList(this.searchParams, r => {
-                //     console.log(r)
-                //  });
-                 this.$Api.fetchClassList(this.searchParams, r => {
-                    console.log(r)
-                 });
+                  this.$Api.fetchStudentList(this.searchParams, r => {
+                     if(r.success){
+                         const data = r.data.list;
+                         this.tableData = data;
+                         this.total = r.data.total;
+                     }
+                  });
+//                 this.$Api.fetchClassList(this.searchParams, r => {
+//                    console.log(r)
+//                 });
             },
             handleClick(row) {
                 this.$alert(row, '标题名称', {
@@ -256,6 +262,39 @@
                 this.getList()
 
             },
+            delBtn() {
+                // 批量删除
+                let mult = this.multipleSelection;
+                if(mult && mult.length) {
+                    let str = ''
+                    for(let i=0, c=mult.length; i<c; i++) {
+                        str += mult[i].id + ','
+                    }
+                    const data = {
+                        ids: str.substring(0, str.length -1)
+                    }
+                    this.$Api.fetchStudentDel(data, r => {
+                        if(r.success) {
+                            let self = this;
+                            self.$notify({
+                                title: '成功',
+                                message: '删除成功',
+                                type: 'success'
+                            });
+                            self.ModalEdit = false;
+                            self.getList();
+                        }else {
+                            self.$notify({
+                                title: '失败',
+                                message: r.message,
+                                type: 'error'
+                            });
+                        }
+                    });
+                }else {
+                    this.$message.warning('请至少选择一条数据！')
+                }
+            },
             tableAction(){
                 return this.$createElement('HelpHint',{
                     props:{
@@ -263,22 +302,107 @@
                     }
                 },'操作');
             },
-            goAddManage(){
+            goDetails(id){
                 //跳转到新增学生页面
-                this.$router.push('student_add')
+                this.$router.push({ path:'student_Detail', query: {id: id}})
             },
             handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+                this.searchParams.pageSize = val;
+                this.getList()
             },
             handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
+                this.searchParams.pageNum = val;
+                this.getList()
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
-            studentEditBtn(val) {
+            studentEditBtn(el, val) {
+                if(el) {
+                    // 新增
+                    this.$nextTick(() => {
+                        this.$refs['ruleForm'].resetFields()
+                    })
+                    this.form.id = undefined;
+                    this.form.name = '';
+                    this.form.age = '';
+                    this.form.userNo = '';
+                    this.form.classroomName = '';
+                    this.form.classroomId = 1;
+                    this.form.sex = '';
+                    this.form.contactsName = '';
+                    this.form.contactsPhone = '';
+                    this.form.address = '';
+                    this.modalTitle = '新增学生信息';
+                    this.modalType = true;
+                }else {
+                    this.form.id = val.id;
+                    this.form.name = val.name;
+                    this.form.age = val.age;
+                    this.form.userNo = val.userNo;
+                    this.form.classroomName = val.classroomName;
+                    this.form.classroomId = val.classroomId;
+                    this.form.sex = val.sex;
+                    this.form.contactsName = val.contactsName;
+                    this.form.contactsPhone = val.contactsPhone;
+                    this.form.address = val.address;
+                    this.form.contactsManagerList = [];
+                    this.modalTitle = '编辑学生信息';
+                    this.modalType = false;
+                }
                 console.log(val)
                 this.studentEdit = true;
+            },
+            submitForm(form) {
+                // 提交表单
+                this.$refs[form].validate((valid) => {
+                    if (valid) {
+                        if(this.modalType) {
+                            // 新增的提交
+                            this.$Api.fetchStudentAdd(this.form, r => {
+                                if(r.success) {
+                                    let self = this;
+                                    self.$notify({
+                                        title: '成功',
+                                        message: '新增成功！',
+                                        type: 'success'
+                                    });
+                                    self.studentEdit = false;
+                                    self.getList();
+                                }else {
+                                    self.$notify({
+                                        title: '失败',
+                                        message: r.message,
+                                        type: 'error'
+                                    });
+                                }
+                            });
+                        }else {
+                            // 编辑的提交
+                            this.$Api.fetchStudentUpdate(this.form, r => {
+                                if(r.success){
+                                    let self = this;
+                                    self.$notify({
+                                        title: '成功',
+                                        message: '编辑成功！',
+                                        type: 'success'
+                                    });
+                                    self.studentEdit = false;
+                                    self.getList();
+                                }else {
+                                    self.$notify({
+                                        title: '失败',
+                                        message: r.message,
+                                        type: 'error'
+                                    });
+                                }
+                            });
+                        }
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
             }
         },
         components: {
