@@ -236,7 +236,10 @@
         methods: {
             getList() {
                 //获取列表数据
-                 this.$Api.fetchStudentList(this.searchParams, r => {
+                //  this.$Api.fetchStudentList(this.searchParams, r => {
+                //     console.log(r)
+                //  });
+                 this.$Api.fetchClassList(this.searchParams, r => {
                     console.log(r)
                  });
             },
