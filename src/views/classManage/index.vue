@@ -73,7 +73,7 @@
                         min-width="150">
                     <template slot-scope="scope">
                         <el-button @click="studentEditBtn(0, scope.row)" type="primary" icon="el-icon-edit" size="small" circle></el-button>
-                        <el-button @click="handleClick(scope.row)" type="info" icon="el-icon-info" size="small" circle></el-button>
+                        <el-button @click="goClassDetail(scope.row.id)" type="info" icon="el-icon-info" size="small" circle></el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -136,7 +136,7 @@
                     headmaster: '',
                     headmasterPhone: '',
                 },
-                formLabelWidth: '120px',
+                formLabelWidth: '150px',
                 ModalEdit: false,
                 multipleSelection: [],
                 tableData: [],
@@ -232,9 +232,9 @@
                     }
                 },'操作');
             },
-            goAddManage(){
-                //跳转到新增学生页面
-                this.$router.push('student_add')
+            goClassDetail(id){
+                //跳转到班级详情页面
+                this.$router.push({ path:'class_Detail', query: {id: id}})
             },
             handleSizeChange(val) {
                 this.searchParams.pageSize = val;

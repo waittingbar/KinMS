@@ -52,6 +52,15 @@ let RouteList = [
         component: resolve => require(['~/views/classManage/index.vue'], resolve),
       },
       {
+          path: '/class_Detail',
+          name: 'ClassDetail',
+          meta: {
+              title: '班级详情',
+              keepAlive: false
+          },
+          component: resolve => require(['~/views/classManage/detail.vue'], resolve),
+      },
+      {
         path: '/post_manage',
         name: 'PostManage',
         meta: {

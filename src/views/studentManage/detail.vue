@@ -36,6 +36,13 @@
             </el-form>
         </div>
         <div class="fz-table-content">
+            <el-alert
+                    title="接送人列表"
+                    type="info"
+                    class="detail-static-title"
+                    center
+                    :closable="false">
+            </el-alert>
             <el-table
                     :data="tableData"
                     tooltip-effect="dark"

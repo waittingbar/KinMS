@@ -4,6 +4,19 @@ export default {
     login: (p,c) => A(p,'user/login','post',c),
 
     // ============================================================
+    // 系统账号列表
+    fetchManageList: (p,c) => A(p,'/relay/manager/list','get',c),
+
+    // 新增账号
+    fetchManageAdd: (p,c) => A(p,'/relay/manager/add','get',c),
+
+    // 修改账号
+    fetchManageUpdate: (p,c) => A(p,'/relay/manager/update','get',c),
+
+    // 删除账号
+    fetchManageDelete: (p,c) => A(p,'/relay/manager/delete','get',c),
+
+    // ============================================================
     // 学生列表
     fetchStudentList: (p,c) => A(p,'relay/student/list','get',c),
 

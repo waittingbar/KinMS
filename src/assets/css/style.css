@@ -103,3 +103,16 @@ a {
     text-align: center;
     padding: 20px;
 }
+.detail-static-title {
+    margin-bottom: 5px;
+}
+.detail-static-title .el-alert__title {
+    font-size: 15px;
+    color: #666;
+    padding: 5px;
+    display: inline-block;
+    
+}
+.modal-table-content {
+
+}

@@ -7,10 +7,10 @@
             <div style="float: right">
                 <el-select v-model="searchParams.classroomName" size="small" clearable placeholder="班级名称" style="width: 120px">
                     <el-option
-                            v-for="(v,k) in $Config.className"
-                            :key="k"
-                            :label="v"
-                            :value="k">
+                            v-for="item in this.classList"
+                            :key="item.id"
+                            :label="item.classroomName"
+                            :value="item.classroomName">
                     </el-option>
                 </el-select>
                 <el-input
@@ -120,10 +120,10 @@
                 <el-form-item prop="classroomName" label="班级：" :label-width="formLabelWidth">
                     <el-select v-model="form.classroomName" placeholder="请选择班级">
                         <el-option
-                                v-for="(v,k) in $Config.className"
-                                :key="k"
-                                :label="v"
-                                :value="k">
+                                v-for="item in this.classList"
+                                :key="item.id"
+                                :label="item.classroomName"
+                                :value="item.classroomName">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -203,6 +203,7 @@
                 studentEdit: false,
                 multipleSelection: [],
                 tableData: [],
+                classList: [], // 班级列表数据
                 rules: {
                     name: [
                         { required: true, message: '请输入学生姓名', trigger: 'blur' },
@@ -234,6 +235,7 @@
         },
         created() {
           this.getList();
+          setTimeout(this.getClassList(), 1000)
         },
         methods: {
             getList() {
@@ -249,6 +251,16 @@
 //                    console.log(r)
 //                 });
             },
+            getClassList() {
+              // 获取班级列表
+                this.$Api.fetchClassList({pageSize: 100}, r => {
+                    if(r.success){
+                        const data = r.data.list;
+                        this.classList = data;
+                    }
+                });
+            },
+
             handleClick(row) {
                 this.$alert(row, '标题名称', {
                     confirmButtonText: '确定',
@@ -303,7 +315,7 @@
                 },'操作');
             },
             goDetails(id){
-                //跳转到新增学生页面
+                //跳转到学生详情页面
                 this.$router.push({ path:'student_Detail', query: {id: id}})
             },
             handleSizeChange(val) {
