@@ -61,22 +61,40 @@ let RouteList = [
           component: resolve => require(['~/views/classManage/detail.vue'], resolve),
       },
       {
-        path: '/post_manage',
-        name: 'PostManage',
+        path: '/relay_manage',
+        name: 'relayManage',
         meta: {
           title: '接送人管理',
           keepAlive: false
         },
-        component: resolve => require(['~/views/ContentManage/Index.vue'], resolve),
+        component: resolve => require(['~/views/relayPeopleManage/index.vue'], resolve),
       },
       {
-        path: '/user_manage',
-        name: 'UserManage',
+        path: '/to_school_record',
+        name: 'toSchoolRecord',
         meta: {
-          title: '接送记录管理',
+          title: '今日到校记录',
           keepAlive: true
         },
-        component: resolve => require(['~/views/UserManage/Index.vue'], resolve),
+        component: resolve => require(['~/views/recordManage/recordToSchool.vue'], resolve),
+      },
+      {
+        path: '/leave_school_record',
+        name: 'leaveSchoolRecord',
+        meta: {
+            title: '今日离校记录',
+            keepAlive: true
+        },
+        component: resolve => require(['~/views/recordManage/recordLeaveSchool.vue'], resolve),
+      },
+      {
+        path: '/history_record',
+        name: 'historyRecord',
+        meta: {
+            title: '接送历史记录',
+            keepAlive: true
+        },
+        component: resolve => require(['~/views/recordManage/recordHistory.vue'], resolve),
       },
       {
         path: '/system_manage',

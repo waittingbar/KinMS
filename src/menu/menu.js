@@ -62,7 +62,7 @@ let UserManage = menu.user_manage.children;
 
 UserManage.user = {
   name: '接送人列表',
-  path: '/user_manage',
+  path: '/relay_manage',
 };
 
 
@@ -79,15 +79,15 @@ let CategoryManage = menu.category_manage.children;
 
 CategoryManage.daoxiao = {
   name: '今日到校记录',
-  path: '/category_manage',
+  path: '/to_school_record',
 };
 CategoryManage.lixiao = {
   name: '今日离校记录',
-  path: '/category_manage',
+  path: '/leave_school_record',
 };
 CategoryManage.jiesong = {
   name: '接送历史记录',
-  path: '/category_manage',
+  path: '/history_record',
 };
 
 

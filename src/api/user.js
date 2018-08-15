@@ -52,9 +52,30 @@ export default {
     // 通过班级查询学生
     fetchStudentByClass: (p,c) => A(p,'relay/classroom/studentListById','get',c),
 
+
     // ============================================================
     // 获取关系信息
     fetchTypeList: (p,c) => A(p,'relayApi/comm/relativesType','get',c),
+
+    // ============================================================
+    // 接送人列表
+    fetchRelayList: (p,c) => A(p,'relay/contactsManager/list','get',c),
+
+    // 接送人编辑
+    fetchRelayUpdate: (p,c) => A(p,'relay/contactsManager/update','get',c),
+
+    // 接送人删除
+    fetchRelayDelete: (p,c) => A(p,'relay/contactsManager/delete','get',c),
+
+
+    // ============================================================
+    // 接送记录管理
+
+    // 今日 到校/离校记录 type: 0 今日到校； type：1  今日离校
+    fetchRecordTodayList: (p,c) => A(p,'relay/record/todayList','get',c),
+
+    // 接送历史记录
+    fetchRecordHistoryList: (p,c) => A(p,'relay/record/list','get',c),
 }
 
 
