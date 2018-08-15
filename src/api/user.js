@@ -16,6 +16,9 @@ export default {
     // 删除账号
     fetchManageDelete: (p,c) => A(p,'/relay/manager/delete','get',c),
 
+    // 修改账号状态
+    fetchManageUpdateStatus: (p,c) => A(p,'/relay/manager/updateStatus','get',c),
+
     // ============================================================
     // 学生列表
     fetchStudentList: (p,c) => A(p,'relay/student/list','get',c),
@@ -48,6 +51,10 @@ export default {
 
     // 通过班级查询学生
     fetchStudentByClass: (p,c) => A(p,'relay/classroom/studentListById','get',c),
+
+    // ============================================================
+    // 获取关系信息
+    fetchTypeList: (p,c) => A(p,'relayApi/comm/relativesType','get',c),
 }
 
 

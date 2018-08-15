@@ -29,15 +29,15 @@
                         width="80">
                 </el-table-column>
                 <el-table-column
-                        prop="nickName"
-                        align="center"
-                        label="昵称"
-                        min-width="150">
-                </el-table-column>
-                <el-table-column
                         prop="userName"
                         align="center"
                         label="账号"
+                        min-width="150">
+                </el-table-column>
+                <el-table-column
+                        prop="nickName"
+                        align="center"
+                        label="昵称"
                         min-width="150">
                 </el-table-column>
                 <el-table-column
@@ -45,6 +45,10 @@
                         align="center"
                         label="状态"
                         min-width="150">
+                    <template slot-scope="scope">
+                        <el-tag v-show="scope.row.status === 1" type="danger" size="medium">禁用</el-tag>
+                        <el-tag v-show="scope.row.status === 0" type="success" size="medium">启用</el-tag>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         prop="createTime"
@@ -60,7 +64,8 @@
                         min-width="150">
                     <template slot-scope="scope">
                         <el-button @click="studentEditBtn(0, scope.row)" type="primary" size="small">编辑</el-button>
-                        <el-button @click="goDetails(scope.row.id)" type="info" size="small">禁用</el-button>
+                        <el-button v-show="scope.row.status === 0" @click="optionBtn(scope.row.id, 0)" type="danger" size="small">禁用</el-button>
+                        <el-button v-show="scope.row.status === 1" @click="optionBtn(scope.row.id, 1)" type="success" size="small">启用</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -84,18 +89,18 @@
                 :close-on-click-modal = false
                 :close-on-press-escape = false
                 :visible.sync="studentEdit">
-            <el-form :model="form" :rules="rules" ref="ruleForm" class="dialog-from-700">
-                <el-form-item prop="name" label="账号：" :label-width="formLabelWidth">
-                    <el-input v-model="form.userName" auto-complete="off"></el-input>
+            <el-form :model="form" :rules="rules" ref="ruleForm" class="dialog-from-600">
+                <el-form-item prop="userName" label="账号：" :label-width="formLabelWidth">
+                    <el-input :disabled="!modalType" v-model="form.userName" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item prop="age" label="昵称：" :label-width="formLabelWidth">
+                <el-form-item prop="nickName" label="昵称：" :label-width="formLabelWidth">
                     <el-input v-model="form.nickName" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item prop="age" label="密码：" :label-width="formLabelWidth">
-                    <el-input v-model="form.password" auto-complete="off"></el-input>
+                <el-form-item prop="password" :label="modalType ? '密码：' : '新密码：'" :label-width="formLabelWidth">
+                    <el-input v-model="form.password" type="password" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item prop="age" label="确认密码：" :label-width="formLabelWidth">
-                    <el-input v-model="form.confirmPassword" auto-complete="off"></el-input>
+                <el-form-item prop="confirmPassword" label="确认密码：" :label-width="formLabelWidth">
+                    <el-input v-model="form.confirmPassword" type="password" auto-complete="off"></el-input>
                 </el-form-item>
 
             </el-form>
@@ -140,10 +145,11 @@
                         { required: true, message: '请填写昵称', trigger: 'blur' }
                     ],
                     password: [
-                        { required: true, message: '请填写登录密码', trigger: 'blur' }
+                        { required: true, message: '请填写登录密码', trigger: 'blur' },
+                        { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
                     ],
                     confirmPassword: [
-                        { required: true, message: '请确认登录密码', trigger: 'change' }
+                        { required: true, message: '请确认登录密码', trigger: 'blur' }
                     ]
                 }
             }
@@ -200,7 +206,7 @@
                     const data = {
                         ids: str.substring(0, str.length -1)
                     }
-                    this.$Api.fetchStudentDel(data, r => {
+                    this.$Api.fetchManageDelete(data, r => {
                         if(r.success) {
                             let self = this;
                             self.$notify({
@@ -211,7 +217,7 @@
                             self.ModalEdit = false;
                             self.getList();
                         }else {
-                            self.$notify({
+                            this.$notify({
                                 title: '失败',
                                 message: r.message,
                                 type: 'error'
@@ -225,13 +231,44 @@
             tableAction(){
                 return this.$createElement('HelpHint',{
                     props:{
-                        content:'编辑 / 查看详情'
+                        content:'编辑 / 变更状态'
                     }
                 },'操作');
             },
-            goDetails(id){
-                //跳转到学生详情页面
-                this.$router.push({ path:'student_Detail', query: {id: id}})
+            optionBtn(id, s){
+                //修改账号状态
+                if(id) {
+                    let statusTxt = '';
+                    let data = {
+                        id: id,
+                    };
+                    if(s === 0) {
+                        // 当前为启用
+                        statusTxt = '禁用成功！';
+                        data.status = 1;
+                    }else {
+                        // 当前为禁用
+                        statusTxt = '启用成功！';
+                        data.status = 0;
+                    }
+                    this.$Api.fetchManageUpdateStatus(data, r => {
+                        if(r.success) {
+                            let self = this;
+                            self.$notify({
+                                title: '成功',
+                                message: statusTxt,
+                                type: 'success'
+                            });
+                            self.getList();
+                        }else {
+                            this.$notify({
+                                title: '失败',
+                                message: r.message,
+                                type: 'error'
+                            });
+                        }
+                    });
+                }
             },
             handleSizeChange(val) {
                 this.searchParams.pageSize = val;
@@ -261,8 +298,8 @@
                     this.form.id = val.id;
                     this.form.userName = val.userName;
                     this.form.nickName = val.nickName;
-                    this.form.password = val.password;
-                    this.form.confirmPassword = val.confirmPassword;
+                    this.form.password = '';
+                    this.form.confirmPassword = '';
                     this.modalTitle = '编辑账号信息';
                     this.modalType = false;
                 }
@@ -286,7 +323,7 @@
                                     self.studentEdit = false;
                                     self.getList();
                                 }else {
-                                    self.$notify({
+                                    this.$notify({
                                         title: '失败',
                                         message: r.message,
                                         type: 'error'
@@ -295,7 +332,7 @@
                             });
                         }else {
                             // 编辑的提交
-                            this.$Api.fetchStudentUpdate(this.form, r => {
+                            this.$Api.fetchManageUpdate(this.form, r => {
                                 if(r.success){
                                     let self = this;
                                     self.$notify({
@@ -306,7 +343,7 @@
                                     self.studentEdit = false;
                                     self.getList();
                                 }else {
-                                    self.$notify({
+                                    this.$notify({
                                         title: '失败',
                                         message: r.message,
                                         type: 'error'

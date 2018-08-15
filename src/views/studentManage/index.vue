@@ -5,12 +5,12 @@
             <el-button type="danger" @click="delBtn" icon="el-icon-delete" size="small">批量删除</el-button>
             <el-button type="primary" @click="studentEditBtn(1)" icon="el-icon-plus" size="small">新增学生</el-button>
             <div style="float: right">
-                <el-select v-model="searchParams.classroomName" size="small" clearable placeholder="班级名称" style="width: 120px">
+                <el-select v-model="searchParams.classroomId" size="small" clearable placeholder="班级名称" style="width: 230px">
                     <el-option
                             v-for="item in this.classList"
                             :key="item.id"
-                            :label="item.classroomName"
-                            :value="item.classroomName">
+                            :label="item.classroomName +'  -（班主任：'+ item.headmaster +'）'"
+                            :value="item.id">
                     </el-option>
                 </el-select>
                 <el-input
@@ -118,12 +118,12 @@
                     <el-input v-model="form.age" auto-complete="off"></el-input>
                 </el-form-item>
                 <el-form-item prop="classroomName" label="班级：" :label-width="formLabelWidth">
-                    <el-select v-model="form.classroomName" placeholder="请选择班级">
+                    <el-select v-model="form.classroomId" placeholder="请选择班级">
                         <el-option
                                 v-for="item in this.classList"
                                 :key="item.id"
-                                :label="item.classroomName"
-                                :value="item.classroomName">
+                                :label="item.classroomName +'  -（班主任：'+ item.headmaster +'）'"
+                                :value="item.id">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -152,7 +152,14 @@
                             <el-input v-model="form.contactsManagerList.name" auto-complete="off"></el-input>
                         </el-form-item>
                         <el-form-item class="second-form-item" label="关系：" :label-width="formLabelWidth">
-                            <el-input v-model="form.contactsManagerList.type" auto-complete="off"></el-input>
+                            <el-select v-model="form.contactsManagerList.type" placeholder="请选择关系">
+                                <el-option
+                                        v-for="item in this.typeList"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.id">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item class="second-form-item" label="联系电话：" :label-width="formLabelWidth">
                             <el-input v-model="form.contactsManagerList.contactsPhone" auto-complete="off"></el-input>
@@ -181,14 +188,14 @@
                 searchParams:{
                     pageNum: 1,
                     pageSize: 10,
-                    classroomName: '',
+                    classroomId: '',
                     name: ''
                 },
                 form: {
                     name: '',
                     age: '',
                     userNo: '',
-                    classroomName: '',
+                    classroomId: '',
                     sex: '',
                     contactsName: '',
                     contactsPhone: '',
@@ -204,6 +211,7 @@
                 multipleSelection: [],
                 tableData: [],
                 classList: [], // 班级列表数据
+                typeList: [], // 关系列表
                 rules: {
                     name: [
                         { required: true, message: '请输入学生姓名', trigger: 'blur' },
@@ -215,7 +223,7 @@
                     userNo: [
                         { required: true, message: '请输入身份证号', trigger: 'blur' }
                     ],
-                    classroomName: [
+                    classroomId: [
                         { required: true, message: '请选择班级', trigger: 'change' }
                     ],
                     sex: [
@@ -260,6 +268,15 @@
                     }
                 });
             },
+            getTypeList() {
+              // 获取关系数据
+                this.$Api.fetchTypeList({}, r => {
+                    if(r.success){
+                        const data = r.data;
+                        this.typeList = data;
+                    }
+                });
+            },
 
             handleClick(row) {
                 this.$alert(row, '标题名称', {
@@ -296,7 +313,7 @@
                             self.ModalEdit = false;
                             self.getList();
                         }else {
-                            self.$notify({
+                            this.$notify({
                                 title: '失败',
                                 message: r.message,
                                 type: 'error'
@@ -332,27 +349,28 @@
             studentEditBtn(el, val) {
                 if(el) {
                     // 新增
+
                     this.$nextTick(() => {
+                        console.log('新增？');
                         this.$refs['ruleForm'].resetFields()
-                    })
+                    });
                     this.form.id = undefined;
                     this.form.name = '';
                     this.form.age = '';
                     this.form.userNo = '';
-                    this.form.classroomName = '';
-                    this.form.classroomId = 1;
+                    this.form.classroomId = '';
                     this.form.sex = '';
                     this.form.contactsName = '';
                     this.form.contactsPhone = '';
                     this.form.address = '';
                     this.modalTitle = '新增学生信息';
                     this.modalType = true;
+                    this.getTypeList(); // 加载关系列表
                 }else {
                     this.form.id = val.id;
                     this.form.name = val.name;
                     this.form.age = val.age;
                     this.form.userNo = val.userNo;
-                    this.form.classroomName = val.classroomName;
                     this.form.classroomId = val.classroomId;
                     this.form.sex = val.sex;
                     this.form.contactsName = val.contactsName;
@@ -382,7 +400,7 @@
                                     self.studentEdit = false;
                                     self.getList();
                                 }else {
-                                    self.$notify({
+                                    this.$notify({
                                         title: '失败',
                                         message: r.message,
                                         type: 'error'
@@ -402,7 +420,7 @@
                                     self.studentEdit = false;
                                     self.getList();
                                 }else {
-                                    self.$notify({
+                                    this.$notify({
                                         title: '失败',
                                         message: r.message,
                                         type: 'error'

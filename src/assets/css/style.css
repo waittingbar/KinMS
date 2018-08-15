@@ -68,7 +68,10 @@ a {
 .dialog-from-700 {
     width: 650px;
 }
-.dialog-from-700 .el-select {
+.dialog-from-600 {
+    width: 600px;
+}
+.dialog-from-700 .el-select, .dialog-from-600 .el-select {
     width: 100%;
 }
 .second-form-item {

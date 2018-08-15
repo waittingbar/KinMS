@@ -214,7 +214,7 @@
                             self.ModalEdit = false;
                             self.getList();
                         }else {
-                            self.$notify({
+                            this.$notify({
                                 title: '失败',
                                 message: r.message,
                                 type: 'error'
@@ -291,7 +291,7 @@
                                 self.ModalEdit = false;
                                 self.getList();
                             }else {
-                                self.$notify({
+                                this.$notify({
                                     title: '失败',
                                     message: r.message,
                                     type: 'error'
