@@ -149,10 +149,10 @@
                     <span class="tips-red">注：此处录入只能录入一个信息，如需绑定多个请绑定小程序</span>
                         </el-form-item>
                         <el-form-item class="second-form-item" label="接送人姓名：" :label-width="formLabelWidth">
-                            <el-input v-model="form.contactsManagerList.name" auto-complete="off"></el-input>
+                            <el-input v-model="form.contactsManagerList[0].name" auto-complete="off"></el-input>
                         </el-form-item>
                         <el-form-item class="second-form-item" label="关系：" :label-width="formLabelWidth">
-                            <el-select v-model="form.contactsManagerList.type" placeholder="请选择关系">
+                            <el-select v-model="form.contactsManagerList[0].type" placeholder="请选择关系">
                                 <el-option
                                         v-for="item in this.typeList"
                                         :key="item.id"
@@ -162,7 +162,7 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item class="second-form-item" label="联系电话：" :label-width="formLabelWidth">
-                            <el-input v-model="form.contactsManagerList.contactsPhone" auto-complete="off"></el-input>
+                            <el-input v-model="form.contactsManagerList[0].contactsPhone" auto-complete="off"></el-input>
                         </el-form-item>
                     </el-form>
                 </el-form-item>
@@ -367,6 +367,7 @@
                     this.modalType = true;
                     this.getTypeList(); // 加载关系列表
                 }else {
+                    console.log(val)
                     this.form.id = val.id;
                     this.form.name = val.name;
                     this.form.age = val.age;
@@ -376,7 +377,7 @@
                     this.form.contactsName = val.contactsName;
                     this.form.contactsPhone = val.contactsPhone;
                     this.form.address = val.address;
-                    this.form.contactsManagerList = [];
+                    this.form.contactsManagerList = [{}];
                     this.modalTitle = '编辑学生信息';
                     this.modalType = false;
                 }

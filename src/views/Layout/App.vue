@@ -53,7 +53,7 @@
         <!--</span>-->
         <el-dropdown>
           <span class="header-btn">
-              管理员<i class="el-icon-arrow-down el-icon--right"></i>
+              <span>管理员</span><i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <!--<el-dropdown-item @click.native="$router.push('/personal')"><i style="padding-right: 8px" class="fa fa-cog"></i>个人中心</el-dropdown-item>-->

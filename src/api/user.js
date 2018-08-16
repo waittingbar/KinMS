@@ -76,6 +76,9 @@ export default {
 
     // 接送历史记录
     fetchRecordHistoryList: (p,c) => A(p,'relay/record/list','get',c),
+
+    // 删除接送历史记录
+    fetchRecordListDel: (p,c) => A(p,'relay/record/delete','get',c),
 }
 
 

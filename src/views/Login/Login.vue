@@ -19,8 +19,16 @@
           v-model="password"
           type="password"
           style="margin-bottom: 18px"
+      >
+      </el-input>
+
+      <el-input
+          placeholder="请输入验证码"
+          v-model="code"
+          style="margin-bottom: 18px"
           @keyup.native.enter="login"
       >
+        <template slot="append"><img src="http://apigl.test.dph168.com/common/user_imgcode?t=0.30212355574373473" alt=""></template>
       </el-input>
 
       <el-button
@@ -44,6 +52,7 @@
       return {
         userNmae: '',
         password: '',
+        code: '',
         Remenber: true,
         loginLoading: false
       }

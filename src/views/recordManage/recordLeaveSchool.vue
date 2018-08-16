@@ -193,7 +193,7 @@
                     const data = {
                         ids: str.substring(0, str.length -1)
                     }
-                    this.$Api.fetchRelayDelete(data, r => {
+                    this.$Api.fetchRecordListDel(data, r => {
                         if(r.success) {
                             let self = this;
                             self.$notify({
