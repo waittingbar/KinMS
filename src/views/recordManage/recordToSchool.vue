@@ -42,7 +42,7 @@
                         min-width="150">
                 </el-table-column>
                 <el-table-column
-                        prop="classRoomName"
+                        prop="classroomName"
                         align="center"
                         label="班级"
                         min-width="150">
@@ -58,11 +58,11 @@
                         label="现场照片"
                         min-width="100">
                     <template slot-scope="scope">
-                        <img :src="scope.row.url " class="photo-img" alt="">
+                        <img :src="scope.row.recordUrl" class="photo-img" alt="">
                     </template>
                 </el-table-column>
                 <el-table-column
-                        prop="type"
+                        prop="typeName"
                         align="center"
                         label="关系"
                         min-width="150">
@@ -80,7 +80,7 @@
                         min-width="200">
                 </el-table-column>
                 <el-table-column
-                        prop="time"
+                        prop="createTime"
                         align="center"
                         label="到校时间"
                         min-width="200">

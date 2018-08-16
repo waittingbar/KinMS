@@ -200,11 +200,11 @@
                     contactsName: '',
                     contactsPhone: '',
                     address: '',
-                    contactsManagerList: {
+                    contactsManagerList: [{
                         name: '',
                         type: '',
                         contactsPhone: ''
-                    }
+                    }]
                 },
                 formLabelWidth: '120px',
                 studentEdit: false,

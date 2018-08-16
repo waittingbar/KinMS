@@ -78,11 +78,11 @@
                         label="现场照片"
                         min-width="100">
                     <template slot-scope="scope">
-                        <img :src="scope.row.url " class="photo-img" alt="">
+                        <img :src="scope.row.recordUrl" class="photo-img" alt="">
                     </template>
                 </el-table-column>
                 <el-table-column
-                        prop="type"
+                        prop="typeName"
                         align="center"
                         label="关系"
                         min-width="150">
@@ -100,13 +100,16 @@
                         min-width="200">
                 </el-table-column>
                 <el-table-column
-                        prop="ss"
                         align="center"
                         label="到校/离校"
                         min-width="200">
+                    <template slot-scope="scope">
+                        <el-tag v-show="scope.row.type === 1" type="danger" size="medium">离校</el-tag>
+                        <el-tag v-show="scope.row.type === 0" type="success" size="medium">到校</el-tag>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="jstime"
+                        prop="createTime"
                         align="center"
                         label="接送时间"
                         min-width="200">
