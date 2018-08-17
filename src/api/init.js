@@ -15,6 +15,10 @@ function isFunction(fn) {
 }
 
 function buildServerApiRequest(params, url, type, callback) {
+  Axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
+  Axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
+  Axios.defaults.crossDomain = true;
+  Axios.defaults.withCredentials = true;  //设置cross跨域 并设置访问权限 允许跨域携带cookie信息
   setToken();
   if ('get' == type) {
 	  params={params:params}
@@ -27,13 +31,19 @@ function buildServerApiRequest(params, url, type, callback) {
     result.then(r => {
 		r = r.data;
       //这里可以根据后台数据进一步做一些过滤或者报错之类的
-      callback(r);
+        if(r.data.code === '401') {
+            this.$message.warning('登录异常,请重新登录');
+            sessionStorage.removeItem(this.$Config.tokenKey);
+            this.$router.push({path: '/login'});
+        } else {
+            callback(r);
+        }
     }).catch(e => {
       if(__DEV__)
         console.log(e);
       ElementUI.Notification.error({
         title: '请求错误',
-        message: 'Network Error'
+        message: '网络异常!'
       });
     });
   }

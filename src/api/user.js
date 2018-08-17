@@ -3,6 +3,8 @@ import {buildApiRequest as A,getApiUrl as G} from './init'
 export default {
     // 登录
     login: (p,c) => A(p,'managers/login','get',c),
+    // 退出登录
+    logout: (p,c) => A(p,'managers/logout','get',c),
 
     // 获取验证码
     getCode: (p,c) => A(p,'auth/image','get',c),

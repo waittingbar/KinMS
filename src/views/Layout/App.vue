@@ -177,8 +177,15 @@
         this.NavBarWidth();
       },
       logout() {
-        sessionStorage.removeItem(this.$Config.tokenKey);
-        this.$router.push({path: '/login'});
+        this.$Api.logout({}, r => {
+            if(r.success) {
+                console.log('退出成功!');
+            }
+        });
+        setTimeout(function () {
+            sessionStorage.removeItem(this.$Config.tokenKey);
+            this.$router.push({path: '/login'});
+        },800);
       },
       handleOpen(key, keyPath) {
         //console.log(key, keyPath);
