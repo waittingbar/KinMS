@@ -31,10 +31,13 @@ function buildServerApiRequest(params, url, type, callback) {
     result.then(r => {
 		r = r.data;
       //这里可以根据后台数据进一步做一些过滤或者报错之类的
-        if(r.data.code === '401') {
-            this.$message.warning('登录异常,请重新登录');
-            sessionStorage.removeItem(this.$Config.tokenKey);
-            this.$router.push({path: '/login'});
+        if(r.code == '401') {
+            ElementUI.Notification.error({
+                title: '登录异常',
+                message: '请重新登录!'
+            });
+            sessionStorage.removeItem(Config.tokenKey);
+            // this.$router.push({path: '/login'});
         } else {
             callback(r);
         }

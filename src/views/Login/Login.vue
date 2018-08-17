@@ -65,22 +65,24 @@
     },
     methods: {
       login() {
-        // let APP = this;
-        // APP.loginLoading = true;
-        // setTimeout(() => {
-        //   sessionStorage.setItem(APP.$Config.tokenKey, '123456789');
-        //   APP.$notify({
-        //     title: '登录成功',
-        //     message: '欢迎登录哦。',
-        //     type: 'success'
-        //   });
-        //   APP.loginLoading = false;
-        //   APP.$router.push({path: '/'});
-        // }, 1000);
+
+//         let APP = this;
+//         APP.loginLoading = true;
+//         setTimeout(() => {
+//           sessionStorage.setItem(APP.$Config.tokenKey, '123456789');
+//           APP.$notify({
+//             title: '登录成功',
+//             message: '欢迎登录哦。',
+//             type: 'success'
+//           });
+//           APP.loginLoading = false;
+//           APP.$router.push({path: '/'});
+//         }, 1000);
 
 
 
           this.$Api.login(this.formQuery, r => {
+              console.log(r)
               if(r.success){
                   sessionStorage.setItem(this.$Config.tokenKey, r.token);
                   this.$notify({
@@ -97,11 +99,6 @@
 
         },
         getCodeImg() {
-          // 获取验证码 codeImg
-          //   this.$Api.getCode({t: Math.random()},r => {
-          //       console.log(r);
-          //       this.codeImg = r;
-          //   })
             this.codeImg = this.$Config.apiUrl+'/auth/image?t='+Math.random();
         }
     }
