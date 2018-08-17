@@ -66,12 +66,12 @@ module.exports = (options = {}) => ({
     }
   },
   devServer: {
-    host: '127.0.0.1',
+    host: 'localhost',
     port: 8016,
     open: true,
     proxy: {
       '/api/': {
-        target: 'http://127.0.0.1:8080',
+        target: 'http://183.230.82.6:7024',
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
