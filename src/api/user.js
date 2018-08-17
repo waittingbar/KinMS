@@ -1,7 +1,14 @@
 import {buildApiRequest as A,getApiUrl as G} from './init'
 
 export default {
-    login: (p,c) => A(p,'user/login','post',c),
+    // 登录
+    login: (p,c) => A(p,'managers/login','get',c),
+
+    // 获取验证码
+    getCode: (p,c) => A(p,'auth/image','get',c),
+
+    // 验证token
+    checkToken: (p,c) => A(p,'auth/ check','get',c),
 
     // ============================================================
     // 系统账号列表
