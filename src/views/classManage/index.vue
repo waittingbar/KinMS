@@ -98,13 +98,13 @@
                 :close-on-press-escape = false
                 :visible.sync="ModalEdit">
             <el-form :model="form" :rules="rules" ref="ruleForm" class="dialog-from-700">
-                <el-form-item prop="name" label="班级名称：" :label-width="formLabelWidth">
+                <el-form-item prop="classroomName" label="班级名称：" :label-width="formLabelWidth">
                     <el-input v-model="form.classroomName" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item prop="age" label="班主任姓名：" :label-width="formLabelWidth">
+                <el-form-item prop="headmaster" label="班主任姓名：" :label-width="formLabelWidth">
                     <el-input v-model="form.headmaster" auto-complete="off"></el-input>
                 </el-form-item>
-                <el-form-item prop="userNo" label="班主任联系电话：" :label-width="formLabelWidth">
+                <el-form-item prop="headmasterPhone" label="班主任联系电话：" :label-width="formLabelWidth">
                     <el-input v-model="form.headmasterPhone" auto-complete="off"></el-input>
                 </el-form-item>
             </el-form>

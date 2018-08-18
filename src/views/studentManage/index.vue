@@ -5,19 +5,26 @@
             <el-button type="danger" @click="delBtn" icon="el-icon-delete" size="small">批量删除</el-button>
             <el-button type="primary" @click="studentEditBtn(1)" icon="el-icon-plus" size="small">新增学生</el-button>
             <div style="float: right">
-                <el-select v-model="searchParams.classroomId" size="small" clearable placeholder="班级名称" style="width: 230px">
-                    <el-option
-                            v-for="item in this.classList"
-                            :key="item.id"
-                            :label="item.classroomName +'  -（班主任：'+ item.headmaster +'）'"
-                            :value="item.id">
-                    </el-option>
-                </el-select>
+                <!--<el-select v-model="searchParams.classroomId" size="small" clearable placeholder="班级名称" style="width: 230px">-->
+                    <!--<el-option-->
+                            <!--v-for="item in this.classList"-->
+                            <!--:key="item.id"-->
+                            <!--:label="item.classroomName +'  -（班主任：'+ item.headmaster +'）'"-->
+                            <!--:value="item.id">-->
+                    <!--</el-option>-->
+                <!--</el-select>-->
                 <el-input
                         placeholder="学生姓名"
                         size="small"
                         style="width: 140px"
                         v-model="searchParams.name"
+                        clearable>
+                </el-input>
+                <el-input
+                        placeholder="班级名称"
+                        size="small"
+                        style="width: 140px"
+                        v-model="searchParams.classroomName"
                         clearable>
                 </el-input>
                 <el-button type="success" icon="el-icon-search" size="small" @click="searchBtn"></el-button>
@@ -188,7 +195,7 @@
                 searchParams:{
                     pageNum: 1,
                     pageSize: 10,
-                    classroomId: '',
+                    classroomName: '',
                     name: ''
                 },
                 form: {
