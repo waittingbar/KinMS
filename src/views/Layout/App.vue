@@ -53,7 +53,7 @@
         <!--</span>-->
         <el-dropdown>
           <span class="header-btn">
-              <span>管理员</span><i class="el-icon-arrow-down el-icon--right"></i>
+              <span v-text="userName">管理员</span><i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <!--<el-dropdown-item @click.native="$router.push('/personal')"><i style="padding-right: 8px" class="fa fa-cog"></i>个人中心</el-dropdown-item>-->
@@ -125,6 +125,7 @@
         siteName: this.$Config.siteName,
         isCollapse: false,
         menu: Menu,
+        userName: sessionStorage.getItem(this.$Config.userName)
       };
     },
     methods: {
@@ -180,6 +181,8 @@
         this.$Api.logout({}, r => {
             if(r.success) {
                 console.log('退出成功!');
+                sessionStorage.removeItem(this.$Config.tokenKey);
+                this.$router.push({path: '/login'});
             }
         });
         setTimeout(function () {

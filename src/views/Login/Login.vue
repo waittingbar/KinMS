@@ -84,7 +84,8 @@
           this.$Api.login(this.formQuery, r => {
               console.log(r)
               if(r.success){
-                  sessionStorage.setItem(this.$Config.tokenKey, r.token);
+                  sessionStorage.setItem(this.$Config.tokenKey, r.data.token);
+                  sessionStorage.setItem(this.$Config.userName, r.data.userName);
                   this.$notify({
                       title: '登录成功',
                       message: '欢迎登录哦。',
@@ -93,7 +94,8 @@
                   this.loginLoading = false;
                   this.$router.push({path: '/'});
               }else {
-                  this.$message.warning(r.message);
+                  this.$message.error(r.message);
+                  this.getCodeImg();
               }
           });
 
