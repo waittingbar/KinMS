@@ -62,13 +62,13 @@
                         min-width="150">
                 </el-table-column>
                 <el-table-column
-                        prop="classRoomName"
+                        prop="classroomName"
                         align="center"
                         label="班级"
                         min-width="150">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
+                        prop="parentName"
                         align="center"
                         label="接送人姓名"
                         min-width="150">

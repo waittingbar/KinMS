@@ -110,7 +110,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="ModalEdit = false">取 消</el-button>
-                <el-button type="primary"  @click="submitForm('ruleForm')">保 存</el-button>
+                <el-button type="primary" :loading="upLoading"  @click="submitForm('ruleForm')">保 存</el-button>
             </div>
         </el-dialog>
     </div>
@@ -125,6 +125,7 @@
                 total: 0,
                 modalTitle: '',
                 modalType: true, // 新增: true; 编辑：false
+                upLoading: false,
                 searchParams:{
                     pageNum: 1,
                     pageSize: 10,
@@ -280,6 +281,7 @@
                         }else {
                             msg = '编辑成功！'
                         }
+                        this.upLoading = true;
                         this.$Api.fetchClassUpdate(this.form, r => {
                             if(r.success) {
                                 let self = this;
@@ -288,9 +290,11 @@
                                     message: msg,
                                     type: 'success'
                                 });
+                                this.upLoading = false;
                                 self.ModalEdit = false;
                                 self.getList();
                             }else {
+                                this.upLoading = false;
                                 this.$notify({
                                     title: '失败',
                                     message: r.message,

@@ -48,7 +48,7 @@
                         min-width="150">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
+                        prop="parentName"
                         align="center"
                         label="接送人姓名"
                         min-width="150">

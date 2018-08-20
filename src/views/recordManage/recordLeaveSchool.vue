@@ -42,13 +42,13 @@
                         min-width="150">
                 </el-table-column>
                 <el-table-column
-                        prop="classRoomName"
+                        prop="classroomName"
                         align="center"
                         label="班级"
                         min-width="150">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
+                        prop="parentName"
                         align="center"
                         label="接送人姓名"
                         min-width="150">
@@ -114,7 +114,7 @@
                 searchParams:{
                     pageNum: 1,
                     pageSize: 10,
-                    type: 0, // type 为0是到校记录，否则离校记录
+                    type: 1, // type 为0是到校记录，否则离校记录
                     studentName: '',
                     classroomId: ''
                 },

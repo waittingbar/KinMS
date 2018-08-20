@@ -106,7 +106,7 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="studentEdit = false">取 消</el-button>
-                <el-button type="primary"  @click="submitForm('ruleForm')">保 存</el-button>
+                <el-button type="primary" :loading="upLoading"  @click="submitForm('ruleForm')">保 存</el-button>
             </div>
         </el-dialog>
     </div>
@@ -121,6 +121,7 @@
                 total: 0,
                 modalTitle: '',
                 modalType: true, // 新增: true; 编辑：false
+                upLoading: false,
                 searchParams:{
                     pageNum: 1,
                     pageSize: 10,
@@ -310,6 +311,7 @@
                 // 提交表单
                 this.$refs[form].validate((valid) => {
                     if (valid) {
+                        this.upLoading = true;
                         if(this.modalType) {
                             // 新增的提交
                             this.$Api.fetchManageAdd(this.form, r => {
@@ -320,9 +322,11 @@
                                         message: '新增成功！',
                                         type: 'success'
                                     });
+                                    self.upLoading = false;
                                     self.studentEdit = false;
                                     self.getList();
                                 }else {
+                                    this.upLoading = false;
                                     this.$notify({
                                         title: '失败',
                                         message: r.message,
@@ -340,9 +344,11 @@
                                         message: '编辑成功！',
                                         type: 'success'
                                     });
+                                    self.upLoading = false;
                                     self.studentEdit = false;
                                     self.getList();
                                 }else {
+                                    this.upLoading = false;
                                     this.$notify({
                                         title: '失败',
                                         message: r.message,
@@ -351,7 +357,7 @@
                                 }
                             });
                         }
-                    } else {
+                    }else{
                         console.log('error submit!!');
                         return false;
                     }

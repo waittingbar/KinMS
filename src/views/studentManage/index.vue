@@ -4,6 +4,7 @@
         <ToolBar>
             <el-button type="danger" @click="delBtn" icon="el-icon-delete" size="small">批量删除</el-button>
             <el-button type="primary" @click="studentEditBtn(1)" icon="el-icon-plus" size="small">新增学生</el-button>
+            <el-button type="success" @click="importStudent" icon="el-icon-upload2" size="small">导入学生</el-button>
             <div style="float: right">
                 <!--<el-select v-model="searchParams.classroomId" size="small" clearable placeholder="班级名称" style="width: 230px">-->
                     <!--<el-option-->
@@ -177,8 +178,33 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="studentEdit = false">取 消</el-button>
-                <el-button type="primary"  @click="submitForm('ruleForm')">保 存</el-button>
+                <el-button type="primary" :loading="upLoading"  @click="submitForm('ruleForm')">保 存</el-button>
             </div>
+        </el-dialog>
+        <!-- 导入学生dialog-->
+        <el-dialog
+                title="导入学生信息"
+                :visible.sync="upDialogVisible"
+                width="410px"
+                center>
+            <el-upload
+                    class="upload-demo"
+                    drag
+                    ref="upload"
+                    multiple
+                    :limit="1"
+                    :on-exceed="handleExceed"
+                    :auto-upload="autoUpload"
+                    :on-success="uploadSuccess"
+                    action="https://jsonplaceholder.typicode.com/posts/"
+                    >
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                <div class="el-upload__tip" slot="tip">只能上传excel文件，且不超过1024kb</div>
+            </el-upload>
+            <span slot="footer" class="dialog-footer">
+    <el-button type="primary" @click="submitUpload">确认上传</el-button>
+  </span>
         </el-dialog>
     </div>
 </template>
@@ -192,6 +218,9 @@
                 total: 0,
                 modalTitle: '',
                 modalType: true, // 新增: true; 编辑：false
+                upLoading: false,
+                autoUpload: false,
+                upDialogVisible: false,
                 searchParams:{
                     pageNum: 1,
                     pageSize: 10,
@@ -284,13 +313,22 @@
                     }
                 });
             },
-
-            handleClick(row) {
-                this.$alert(row, '标题名称', {
-                    confirmButtonText: '确定',
-                    callback: action => {
-                    }
-                });
+            handleExceed(files, fileList) {
+                this.$message.warning(`当前限制每次只能上传一个文件`);
+            },
+            importStudent() {
+                // 打开导入学生弹窗
+                this.upDialogVisible = true;
+            },
+            submitUpload() {
+              // 上传文件到服务器
+                this.$refs.upload.submit()
+            },
+            uploadSuccess(response, file, fileList) {
+                console.log(response)
+                console.log(file)
+                console.log(fileList)
+                this.upDialogVisible = false
             },
             searchBtn() {
              // 搜索提交
@@ -395,6 +433,7 @@
                 // 提交表单
                 this.$refs[form].validate((valid) => {
                     if (valid) {
+                        this.upLoading = true;
                         if(this.modalType) {
                             // 新增的提交
                             this.$Api.fetchStudentAdd(this.form, r => {
@@ -405,9 +444,11 @@
                                         message: '新增成功！',
                                         type: 'success'
                                     });
+                                    this.upLoading = false;
                                     self.studentEdit = false;
                                     self.getList();
                                 }else {
+                                    this.upLoading = false;
                                     this.$notify({
                                         title: '失败',
                                         message: r.message,
@@ -425,9 +466,11 @@
                                         message: '编辑成功！',
                                         type: 'success'
                                     });
+                                    this.upLoading = false;
                                     self.studentEdit = false;
                                     self.getList();
                                 }else {
+                                    this.upLoading = false;
                                     this.$notify({
                                         title: '失败',
                                         message: r.message,
