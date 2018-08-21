@@ -191,12 +191,14 @@
                     class="upload-demo"
                     drag
                     ref="upload"
+                    name="file"
                     multiple
                     :limit="1"
                     :on-exceed="handleExceed"
                     :auto-upload="autoUpload"
+                    :with-credentials="withCredent"
                     :on-success="uploadSuccess"
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    :action="upUrl"
                     >
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -212,15 +214,18 @@
 <script>
     import ToolBar from '~/components/ToolBar/ToolBar.vue';
     import HelpHint from '~/components/HelpHint/HelpHint.vue';
+    import {getApiUrl as G} from '~/api/init'
     export default {
         data() {
             return {
                 total: 0,
                 modalTitle: '',
                 modalType: true, // 新增: true; 编辑：false
+                withCredent: true,
                 upLoading: false,
                 autoUpload: false,
                 upDialogVisible: false,
+                upUrl: G('relay/student/importExcel'),
                 searchParams:{
                     pageNum: 1,
                     pageSize: 10,
