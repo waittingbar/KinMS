@@ -330,10 +330,19 @@
                 this.$refs.upload.submit()
             },
             uploadSuccess(response, file, fileList) {
-                console.log(response)
-                console.log(file)
-                console.log(fileList)
-                this.upDialogVisible = false
+                if(response.success) {
+                    this.$notify({
+                        title: '成功',
+                        message: '导入成功！',
+                        type: 'success'
+                    });
+                    this.upDialogVisible = false
+                    this.searchParams.pageNum = 1
+                    this.getList()
+
+                }else {
+                    this.$message.error(response.message)
+                }
             },
             searchBtn() {
              // 搜索提交
